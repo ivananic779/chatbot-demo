@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   title = 'chatbot-demo';
+  apiKey: string = '';
+  anthropic: Anthropic | null = null;
 
   systemMessage: string = `Your goal is to assist job seekers from India in finding employment opportunities in the EU. You'll engage with users who have various backgrounds and skills, such as delivery drivers, masseurs, and truck drivers. Your role is to guide them through the job search process, understand their preferences, and recommend suitable services to help them secure employment. Your FOCUS should be on providing them links to where they can PAY for our services and then receive help. The list of services and links is: 1. "Get Hired or Get Refunded" link: http://gethired-test.com 2. Professional Guidance Plan link: http://get-help-guidence.com. DON'T MENTION THE SERVICES UNTILL YOU'VE GATHERED SOME INFORMATION FROM THE USER!
   
@@ -134,14 +136,21 @@ Would you like to schedule the consultation, or should I guide you to our free r
 
   messages: Anthropic.Messages.MessageParam[] = [];
 
-  anthropic: Anthropic = new Anthropic({
-    apiKey: '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',
-    dangerouslyAllowBrowser: true
-  });
-
   userInput: string = '';
 
   async sendMessage() {
+    if (!this.apiKey) {
+      alert('Please enter an API key first');
+      return;
+    }
+    
+    if (!this.anthropic) {
+      this.anthropic = new Anthropic({
+        apiKey: this.apiKey,
+        dangerouslyAllowBrowser: true
+      });
+    }
+
     if (!this.userInput.trim()) return;
 
     // Add user message to chat
@@ -181,14 +190,14 @@ Would you like to schedule the consultation, or should I guide you to our free r
   }
 
   private async testMessage() {
-    const msg = await this.anthropic.messages.create({
+    const msg = await this.anthropic?.messages.create({
       model: "claude-3-5-haiku-20241022",
       max_tokens: 1024,
       system: this.systemMessage,
       messages: this.messages,
     });
 
-    const msg2: Anthropic.ContentBlock = msg.content[0];
+    const msg2: Anthropic.ContentBlock = msg!.content[0];
 
     if (msg2.type === 'text') {
       const textBlock = msg2 as Anthropic.TextBlock;
