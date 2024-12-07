@@ -169,7 +169,7 @@ Assistant:`;H.DEFAULT_TIMEOUT=6e5;H.AnthropicError=_;H.APIError=ne;H.APIConnecti
 </immediate_task>
 `,oy=`
 <response_format>
-    Put your response in tags and style it as a chat message.
+    The response should be in html.
 </response_format>
 `,iy=`
     [Marko]:
