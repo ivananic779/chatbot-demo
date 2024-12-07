@@ -171,9 +171,7 @@ Assistant:`;H.DEFAULT_TIMEOUT=6e5;H.AnthropicError=_;H.APIError=ne;H.APIConnecti
 <response_format>
     The response should be in html.
 </response_format>
-`,iy=`
-    [Marko]:
-`,sy=`
+`,iy="[Marko]:",sy=`
     Think about your answer first before you respond.
 `;function gM(e,t){if(e&1&&(Pe(0,"pre",11),tn(1),Ee()),e&2){let n=jp();dt(),Pc(n.systemMessage)}}function mM(e,t){if(e&1&&(Pe(0,"div",12)(1,"strong"),tn(2),Ee(),tn(3),Ee()),e&2){let n=t.$implicit;$r("ngClass",n.role),dt(2),Jn("",n.role,":"),dt(),Jn(" ",n.content," ")}}var Ia=class e{title="chatbot-demo";apiKey="";anthropic=null;systemMessage=`${Xm}
 ${Jm}
