@@ -2,9 +2,17 @@
   <input type="password" [(ngModel)]="apiKey" name="apiKey" placeholder="Enter your API key" required>
 </div>
 
+<div class="system-message-section">
+  <p>Ovdje možeš vidjeti što dajem kao kontekst. Kvaliteta će najviše ovisiti o tome što mu dajemo kao kontekst prije razgovora.</p>
+  <button (click)="toggleSystemMessage()">
+    {{ showSystemMessage ? 'Sakrij' : 'Prikaži' }} Kontekst
+  </button>
+  <pre *ngIf="showSystemMessage" class="system-message">{{ systemMessage }}</pre>
+</div>
+
 <div class="chat-container">
   <div class="messages">
-    <div *ngFor="let message of messages" class="message" [ngClass]="message.role">
+    <div *ngFor="let message of messageHistory" class="message" [ngClass]="message.role">
       <strong>{{ message.role }}:</strong> {{ message.content }}
     </div>
   </div>
