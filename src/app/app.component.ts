@@ -25,6 +25,8 @@ export class AppComponent {
 
   showSystemMessage: boolean = false;
 
+  currentStreamedMessage: string = '';
+
   toggleSystemMessage() {
     this.showSystemMessage = !this.showSystemMessage;
   }
@@ -44,19 +46,16 @@ export class AppComponent {
 
     if (!this.userInput.trim()) return;
 
-    // Add user message to chat
     const userMessage: Anthropic.Messages.MessageParam = {
       role: 'user',
       content: this.userInput
     };
     this.messageHistory.push(userMessage);
-
-    // Clear input
     this.userInput = '';
+    this.currentStreamedMessage = '';
 
     try {
-      // Get response from Claude
-      const response = await this.anthropic.messages.create({
+      const stream = await this.anthropic.messages.stream({
         model: "claude-3-5-haiku-20241022",
         max_tokens: 2048,
         temperature: 0.0,
@@ -64,14 +63,28 @@ export class AppComponent {
         messages: this.messageHistory,
       });
 
-      // Add assistant response to chat
-      const assistantMessage = response.content[0];
-      if (assistantMessage.type === 'text') {
+      stream.on('text', (text) => {
+        this.currentStreamedMessage += text;
+        // Force Angular change detection
+        (window as any).requestAnimationFrame(() => {});
+      });
+
+      stream.on('end', () => {
         this.messageHistory.push({
           role: 'assistant',
-          content: assistantMessage.text
+          content: this.currentStreamedMessage
         });
-      }
+        this.currentStreamedMessage = '';
+      });
+
+      stream.on('error', (error) => {
+        console.error('Stream error:', error);
+        this.messageHistory.push({
+          role: 'assistant',
+          content: 'Sorry, there was an error processing your message.'
+        });
+      });
+
     } catch (error) {
       console.error('Error:', error);
       this.messageHistory.push({

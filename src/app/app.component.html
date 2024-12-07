@@ -13,7 +13,10 @@
 <div class="chat-container">
   <div class="messages">
     <div *ngFor="let message of messageHistory" class="message" [ngClass]="message.role">
-      <strong>{{ message.role }}:</strong> {{ message.content }}
+      <strong>{{ message.role }}:</strong> <span [innerHTML]="message.content"></span>
+    </div>
+    <div *ngIf="currentStreamedMessage" class="message assistant">
+      <strong>assistant:</strong> <span [innerHTML]="currentStreamedMessage"></span>
     </div>
   </div>
   
@@ -22,3 +25,9 @@
     <button type="submit">Send</button>
   </form>
 </div>
+
+<style>
+.message {
+  white-space: pre-wrap;
+}
+</style>
