@@ -51,12 +51,6 @@ export class AppComponent {
     };
     this.messageHistory.push(userMessage);
 
-    // Add prefill message to chat
-    this.messageHistory.push({
-      role: 'assistant',
-      content: PREFILL
-    });
-
     // Clear input
     this.userInput = '';
 
