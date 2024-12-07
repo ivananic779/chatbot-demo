@@ -169,7 +169,7 @@ Assistant:`;H.DEFAULT_TIMEOUT=6e5;H.AnthropicError=_;H.APIError=ne;H.APIConnecti
 </immediate_task>
 `,iy=`
 <response_format>
-    The response should be in html.
+    The response should be in html. But it is already in the <body></body> so don't use it and it's parent tags.
 </response_format>
 `;var sy=`
     Think about your answer first before you respond.
